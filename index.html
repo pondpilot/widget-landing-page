@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>PondPilot Widget - Interactive SQL in the Browser</title>
+        <meta
+            name="description"
+            content="Transform static SQL code blocks into interactive, browser-based SQL editors with PondPilot Widget. Powered by DuckDB WebAssembly."
+        />
+
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="assets/css/styles.css" />
+        <link rel="stylesheet" href="assets/css/widget.css" />
+    </head>
+    <body>
+        <!-- Hero Section -->
+        <section class="hero-section widget-hero">
+            <div class="hero-logo-corner">
+                <img src="assets/images/polly.svg" alt="PondPilot" class="corner-logo" />
+            </div>
+            <div class="hero-nav-links">
+                <a href="https://github.com/pondpilot/pondpilot-widget" class="nav-icon-link" title="GitHub" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.npmjs.com/package/pondpilot-widget" class="nav-icon-link" title="NPM" target="_blank">
+                    <i class="fab fa-npm"></i>
+                </a>
+                <a href="https://pondpilot.io" class="nav-icon-link nav-logo-link" title="PondPilot">
+                    <img src="assets/images/polly.svg" alt="PondPilot" class="nav-logo" />
+                </a>
+            </div>
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">
+                        PondPilot Widget
+                        <span class="hero-subtitle">Interactive SQL in the Browser</span>
+                    </h1>
+                    <p class="hero-description">
+                        Transform static SQL code blocks into interactive, browser-based SQL editors. Powered by DuckDB WebAssembly with
+                        zero backend requirements.
+                    </p>
+                    <div class="hero-features">
+                        <div class="feature-tag">🚀 Lightweight (~22KB)</div>
+                        <div class="feature-tag">⚡ Zero Backend</div>
+                        <div class="feature-tag">🎨 Dark/Light Mode</div>
+                        <div class="feature-tag">♿ Accessible</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Start -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Quick Start</h2>
+                <div class="quick-start-grid">
+                    <div class="quick-start-card">
+                        <div class="step-number">1</div>
+                        <h3>Include the Script</h3>
+                        <pre class="code-block"><code>&lt;script src="https://unpkg.com/pondpilot-widget"&gt;&lt;/script&gt;</code></pre>
+                    </div>
+                    <div class="quick-start-card">
+                        <div class="step-number">2</div>
+                        <h3>Add the Class</h3>
+                        <pre class="code-block"><code>&lt;pre class="pondpilot-snippet"&gt;
+SELECT 'Hello World' as greeting;
+&lt;/pre&gt;</code></pre>
+                    </div>
+                    <div class="quick-start-card">
+                        <div class="step-number">3</div>
+                        <h3>That's It!</h3>
+                        <p>Your SQL code blocks are now interactive. Users can modify and run queries directly in the browser.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Demo -->
+        <section class="section demo-section">
+            <div class="container">
+                <h2 class="section-title">Try It Live</h2>
+                <p class="section-description">
+                    Click "Run" on any of the examples below to see the widget in action. Feel free to modify the queries and experiment!
+                </p>
+
+                <!-- Basic Example -->
+                <div class="demo-block">
+                    <h3 class="demo-title">Basic Query</h3>
+                    <p class="demo-description">Start with a simple SELECT statement:</p>
+                    <pre class="pondpilot-snippet">
+SELECT
+    'Hello from PondPilot Widget!' as greeting,
+    CURRENT_DATE as today,
+    42 as answer_to_everything;</pre
+                    >
+                </div>
+
+                <!-- Data Creation -->
+                <div class="demo-block">
+                    <h3 class="demo-title">Working with Data</h3>
+                    <p class="demo-description">Create tables and analyze data entirely in the browser:</p>
+                    <pre class="pondpilot-snippet">
+-- Create a sample products table
+CREATE TABLE products AS
+SELECT * FROM (VALUES
+    ('Laptop', 'Electronics', 999.99, 50),
+    ('Mouse', 'Electronics', 29.99, 200),
+    ('Desk', 'Furniture', 299.99, 25),
+    ('Chair', 'Furniture', 199.99, 40),
+    ('Monitor', 'Electronics', 349.99, 75)
+) AS t(name, category, price, stock);
+
+-- Analyze inventory by category
+SELECT
+    category,
+    COUNT(*) as product_count,
+    ROUND(AVG(price), 2) as avg_price,
+    SUM(stock) as total_stock,
+    ROUND(SUM(price * stock), 2) as inventory_value
+FROM products
+GROUP BY category
+ORDER BY inventory_value DESC;</pre
+                    >
+                </div>
+
+                <!-- Advanced Analytics -->
+                <div class="demo-block">
+                    <h3 class="demo-title">Advanced Analytics</h3>
+                    <p class="demo-description">Window functions, CTEs, and complex queries work seamlessly:</p>
+                    <pre class="pondpilot-snippet">
+-- Create sales data
+CREATE TABLE daily_sales AS
+SELECT
+    date,
+    ROUND(RANDOM() * 1000 + 500, 2) as revenue
+FROM generate_series(
+    DATE '2025-01-01',
+    DATE '2025-01-14',
+    INTERVAL 1 DAY
+) AS t(date);
+
+-- Calculate moving averages and growth
+SELECT
+    date,
+    revenue,
+    ROUND(AVG(revenue) OVER (
+        ORDER BY date
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ), 2) as ma_3day,
+    ROUND(revenue - LAG(revenue) OVER (ORDER BY date), 2) as daily_change,
+    ROUND(100.0 * (revenue - LAG(revenue) OVER (ORDER BY date)) /
+          LAG(revenue) OVER (ORDER BY date), 1) as pct_change
+FROM daily_sales
+ORDER BY date;</pre
+                    >
+                </div>
+
+                <!-- External Data -->
+                <div class="demo-block">
+                    <h3 class="demo-title">External Data Sources</h3>
+                    <p class="demo-description">Query remote CSV and Parquet files directly:</p>
+                    <pre class="pondpilot-snippet">
+-- Query a remote CSV file
+SELECT
+    country,
+    COUNT(*) as city_count,
+    ROUND(AVG(population), 0) as avg_population
+FROM 'https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv'
+WHERE population > 100000
+GROUP BY country
+ORDER BY city_count DESC
+LIMIT 10;</pre
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- Installation -->
+        <section class="section installation-section">
+            <div class="container">
+                <h2 class="section-title">Installation</h2>
+                <div class="installation-grid">
+                    <div class="install-method">
+                        <h3><i class="fas fa-link"></i> CDN</h3>
+                        <p>Quick and easy - just include the script tag:</p>
+                        <pre class="code-block"><code>&lt;script src="https://unpkg.com/pondpilot-widget"&gt;&lt;/script&gt;</code></pre>
+                    </div>
+                    <div class="install-method">
+                        <h3><i class="fab fa-npm"></i> NPM</h3>
+                        <p>For modern build systems:</p>
+                        <pre class="code-block"><code>npm install pondpilot-widget</code></pre>
+                    </div>
+                    <div class="install-method">
+                        <h3><i class="fab fa-yarn"></i> Yarn</h3>
+                        <p>Alternative package manager:</p>
+                        <pre class="code-block"><code>yarn add pondpilot-widget</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Configuration -->
+        <section class="section">
+            <div class="container">
+                <h2 class="section-title">Configuration</h2>
+                <p class="section-description">Customize the widget's appearance and behavior:</p>
+
+                <div class="config-example">
+                    <pre class="code-block"><code>// Set theme
+window.PondPilot.config.theme = 'dark'; // or 'light'
+
+// Hide powered by footer
+window.PondPilot.config.showPoweredBy = false;
+
+// Set custom height
+window.PondPilot.config.height = '400px';
+
+// Enable syntax highlighting
+window.PondPilot.config.highlightSyntax = true;</code></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases -->
+        <section class="section use-cases-section">
+            <div class="container">
+                <h2 class="section-title">Perfect For</h2>
+                <div class="use-cases-grid">
+                    <div class="use-case-card">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>Educational Content</h3>
+                        <p>Teach SQL with hands-on, interactive examples</p>
+                    </div>
+                    <div class="use-case-card">
+                        <i class="fas fa-book"></i>
+                        <h3>Documentation</h3>
+                        <p>Provide runnable examples in your technical docs</p>
+                    </div>
+                    <div class="use-case-card">
+                        <i class="fas fa-blog"></i>
+                        <h3>Technical Blogs</h3>
+                        <p>Engage readers with interactive data analysis</p>
+                    </div>
+                    <div class="use-case-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Data Portfolios</h3>
+                        <p>Showcase your SQL skills interactively</p>
+                    </div>
+                    <div class="use-case-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Workshops</h3>
+                        <p>Interactive SQL training and tutorials</p>
+                    </div>
+                    <div class="use-case-card">
+                        <i class="fas fa-code"></i>
+                        <h3>Code Examples</h3>
+                        <p>Live demonstrations in presentations</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-brand">
+                        <img src="assets/images/polly.svg" alt="PondPilot" class="footer-logo" />
+                        <span class="footer-brand-text">PondPilot Widget</span>
+                    </div>
+                    <div class="footer-links">
+                        <a href="https://github.com/pondpilot/pondpilot-widget" target="_blank">GitHub</a>
+                        <a href="https://www.npmjs.com/package/pondpilot-widget" target="_blank">NPM</a>
+                        <a href="https://pondpilot.io/blog">Blog</a>
+                        <a href="https://pondpilot.io">PondPilot</a>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>&copy; 2025 PondPilot. Open source under MIT license.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- PondPilot Widget Script -->
+        <script src="https://unpkg.com/pondpilot-widget"></script>
+
+        <!-- Configuration -->
+        <script>
+            // Configure the widget
+            window.PondPilot.config.theme = "light";
+            window.PondPilot.config.showPoweredBy = true;
+        </script>
+    </body>
+</html>
