@@ -97,7 +97,7 @@ SELECT 'Hello World' as greeting;
                     <pre class="pondpilot-snippet">
 SELECT
     'Hello from PondPilot Widget!' as greeting,
-    CURRENT_DATE as today,
+    CURRENT_DATE::STRING as today,
     42 as answer_to_everything;</pre
                     >
                 </div>
@@ -148,7 +148,7 @@ FROM generate_series(
 
 -- Calculate moving averages and growth
 SELECT
-    date,
+    date::STRING as date,
     revenue,
     ROUND(AVG(revenue) OVER (
         ORDER BY date
@@ -167,16 +167,17 @@ ORDER BY date;</pre
                     <h3 class="demo-title">External Data Sources</h3>
                     <p class="demo-description">Query remote CSV and Parquet files directly:</p>
                     <pre class="pondpilot-snippet">
--- Query a remote CSV file
+-- Query a remote Parquet file
 SELECT
-    country,
-    COUNT(*) as city_count,
-    ROUND(AVG(population), 0) as avg_population
-FROM 'https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv'
-WHERE population > 100000
-GROUP BY country
-ORDER BY city_count DESC
-LIMIT 10;</pre
+  o_orderstatus,
+  COUNT(*) AS total_orders,
+  ROUND(AVG(o_totalprice), 2) AS avg_order_value
+FROM
+  'https://shell.duckdb.org/data/tpch/0_01/parquet/orders.parquet'
+GROUP BY
+  o_orderstatus
+ORDER BY
+  total_orders DESC;</pre
                     >
                 </div>
             </div>
