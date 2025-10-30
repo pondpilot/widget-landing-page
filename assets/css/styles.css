@@ -686,6 +686,7 @@ a:hover {
     padding: 20px;
     margin-bottom: 20px;
     overflow-x: auto;
+    flex: 1;
 }
 
 .code-container {
