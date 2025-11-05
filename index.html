@@ -18,6 +18,7 @@
 
         <link rel="stylesheet" href="assets/css/styles.css" />
         <link rel="stylesheet" href="assets/css/widget.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
     </head>
     <body>
         <header class="hero" id="top">
@@ -44,7 +45,6 @@
 
                 <div class="hero__grid">
                     <div class="hero__content">
-                        <span class="pill pill--new">Now shipping v1.4.0</span>
                         <h1>Make every SQL example a playground.</h1>
                         <p>
                             Transform static SQL into interactive DuckDB sessions you can embed in documentation,
@@ -82,10 +82,6 @@
                     </div>
                     <div class="hero__preview">
                         <div class="preview">
-                            <div class="preview__header">
-                                <span class="preview__badge"><i class="fas fa-play"></i> Live widget</span>
-                                <span class="preview__hint">Edit, then press Ctrl/Cmd + Enter</span>
-                            </div>
                             <pre class="pondpilot-snippet hero-snippet">SELECT
     o_orderstatus AS status,
     COUNT(*) AS total_orders,
@@ -95,13 +91,19 @@ GROUP BY status
 ORDER BY total_orders DESC;
 </pre>
                             <div class="preview__footer">
-                                <div>
-                                    <strong>Instant results</strong>
-                                    <span>Runs DuckDB entirely in your browser</span>
+                                <div class="preview__footer-item">
+                                    <i class="fas fa-rocket"></i>
+                                    <div>
+                                        <strong>Instant results</strong>
+                                        <span>Runs DuckDB entirely in your browser</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <strong>Copy &amp; drop-in ready</strong>
-                                    <span>Add a class and you're done</span>
+                                <div class="preview__footer-item">
+                                    <i class="fas fa-code"></i>
+                                    <div>
+                                        <strong>Drop-in ready</strong>
+                                        <span>Add a class and you're done</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +173,7 @@ ORDER BY total_orders DESC;
                     <div class="split">
                         <div>
                             <span class="pill pill--ghost">Quick start</span>
-                            <h2>Give any &lt;pre&gt; superpowers in under a minute.</h2>
+                            <h2>Give any <code>&lt;pre&gt;</code> superpowers in under a minute.</h2>
                             <p>
                                 PondPilot auto-detects marked snippets and turns them into interactive notebooks on load. Prefer full control?
                                 Instantiate widgets programmatically and share a DuckDB instance across them.
@@ -206,7 +208,7 @@ ORDER BY total_orders DESC;
                                     <span>CDN</span>
                                     <a href="https://unpkg.com/pondpilot-widget@1.4.0" target="_blank" rel="noreferrer">unpkg.com</a>
                                 </header>
-                                <pre><code>&lt;script src="https://unpkg.com/pondpilot-widget@1.4.0"&gt;&lt;/script&gt;
+                                <pre><code class="language-markup">&lt;script src="https://unpkg.com/pondpilot-widget@1.4.0"&gt;&lt;/script&gt;
 &lt;pre class="pondpilot-snippet"&gt;
 SELECT 'Hello DuckDB' AS greeting;
 &lt;/pre&gt;</code></pre>
@@ -216,7 +218,7 @@ SELECT 'Hello DuckDB' AS greeting;
                                     <span>Programmatic init</span>
                                     <a href="https://github.com/pondpilot/pondpilot-widget#usage" target="_blank" rel="noreferrer">Docs</a>
                                 </header>
-                                <pre><code>import 'pondpilot-widget';
+                                <pre><code class="language-javascript">import 'pondpilot-widget';
 
 const el = document.querySelector('#report');
 const dbPromise = window.createDuckDB?.();
@@ -285,7 +287,7 @@ new PondPilot.Widget(el, {
                             </ul>
                             <div class="whats-new__actions">
                                 <a class="btn btn--ghost" href="https://github.com/pondpilot/pondpilot-widget/blob/main/CHANGELOG.md" target="_blank" rel="noreferrer">Read the changelog</a>
-                                <a class="btn btn--link" href="https://github.com/pondpilot/pondpilot-widget/tree/main/docs" target="_blank" rel="noreferrer">See the docs</a>
+                                <a class="btn btn--ghost" href="https://github.com/pondpilot/pondpilot-widget/tree/main/docs" target="_blank" rel="noreferrer">See the docs</a>
                             </div>
                         </div>
                         <div class="whats-new__card">
@@ -294,7 +296,7 @@ new PondPilot.Widget(el, {
                                 React to query results with the new <code>pondpilot:results</code> event. Perfect for building custom charts,
                                 maps, or any data visualization alongside your interactive SQL.
                             </p>
-                            <pre><code>widget.addEventListener('pondpilot:results', (e) => {
+                            <pre><code class="language-javascript">widget.addEventListener('pondpilot:results', (e) => {
   const { rows, columns } = e.detail;
 
   // Build a chart, update a map, etc.
@@ -320,19 +322,23 @@ new PondPilot.Widget(el, {
                         <h2>From Markdown to modern frameworks.</h2>
                         <p>Drop the widget into static sites, React, Vue, or your favorite docs stack—no build-step gymnastics required.</p>
                     </div>
-                    <div class="integration-grid">
+                    <div class="integration-stack">
                         <article class="integration-card">
-                            <h3>Markdown &amp; docs</h3>
-                            <p>Add one script tag to Docusaurus, VitePress, Astro, or a plain HTML export and you're live.</p>
-                            <pre><code>// docusaurus.config.js
+                            <div class="integration-card__header">
+                                <h3>Markdown &amp; docs</h3>
+                                <p>Add one script tag to Docusaurus, VitePress, Astro, or a plain HTML export and you're live.</p>
+                            </div>
+                            <pre><code class="language-javascript">// docusaurus.config.js
 module.exports = {
   scripts: ['https://unpkg.com/pondpilot-widget@1.4.0']
 };</code></pre>
                         </article>
                         <article class="integration-card">
-                            <h3>React &amp; Next.js</h3>
-                            <p>Import the package once, then wrap snippets in lightweight components for live tutorials.</p>
-                            <pre><code>import { useEffect, useRef } from 'react';
+                            <div class="integration-card__header">
+                                <h3>React &amp; Next.js</h3>
+                                <p>Import the package once, then wrap snippets in lightweight components for live tutorials.</p>
+                            </div>
+                            <pre><code class="language-javascript">import { useEffect, useRef } from 'react';
 import 'pondpilot-widget';
 
 export function SQLPlayground({ sql }) {
@@ -345,9 +351,11 @@ export function SQLPlayground({ sql }) {
 }</code></pre>
                         </article>
                         <article class="integration-card">
-                            <h3>Workshops &amp; slides</h3>
-                            <p>Embed interactive SQL directly inside slides or LMS content to keep labs engaging.</p>
-                            <pre><code>&lt;section data-auto-animate&gt;
+                            <div class="integration-card__header">
+                                <h3>Workshops &amp; slides</h3>
+                                <p>Embed interactive SQL directly inside slides or LMS content to keep labs engaging.</p>
+                            </div>
+                            <pre><code class="language-markup">&lt;section data-auto-animate&gt;
   &lt;h2&gt;Run the query&lt;/h2&gt;
   &lt;pre class="pondpilot-snippet"&gt;SELECT * FROM attendees;&lt;/pre&gt;
 &lt;/section&gt;</code></pre>
@@ -504,6 +512,9 @@ export function SQLPlayground({ sql }) {
             });
         </script>
         <script src="https://unpkg.com/pondpilot-widget@1.4.0"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
         <script>
             if (window.PondPilot) {
                 if (typeof window.PondPilot.config === 'function') {
