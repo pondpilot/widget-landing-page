@@ -3,303 +3,527 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PondPilot Widget - Interactive SQL in the Browser</title>
+        <title>PondPilot Widget — Interactive SQL Playgrounds for the Web</title>
         <meta
             name="description"
-            content="Transform static SQL code blocks into interactive, browser-based SQL editors with PondPilot Widget. Powered by DuckDB WebAssembly."
-        />
+            content="PondPilot Widget 1.4.0 turns static SQL snippets into interactive DuckDB playgrounds. Ship live demos, docs, and tutorials with zero backend." />
 
-        <!-- Favicon -->
         <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-        <!-- Font Awesome -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+            rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-        <!-- Styles -->
         <link rel="stylesheet" href="assets/css/styles.css" />
         <link rel="stylesheet" href="assets/css/widget.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
     </head>
     <body>
-        <!-- Hero Section -->
-        <section class="hero-section widget-hero">
-            <div class="hero-logo-corner">
-                <img src="assets/images/polly.svg" alt="PondPilot" class="corner-logo" />
-            </div>
-            <div class="hero-nav-links">
-                <a href="https://github.com/pondpilot/pondpilot-widget" class="nav-icon-link" title="GitHub" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://www.npmjs.com/package/pondpilot-widget" class="nav-icon-link" title="NPM" target="_blank">
-                    <i class="fab fa-npm"></i>
-                </a>
-                <a href="https://pondpilot.io" class="nav-icon-link nav-logo-link" title="PondPilot">
-                    <img src="assets/images/polly.svg" alt="PondPilot" class="nav-logo" />
-                </a>
-            </div>
-            <div class="container">
-                <div class="hero-content">
-                    <h1 class="hero-title">
-                        PondPilot Widget
-                        <span class="hero-subtitle">Interactive SQL in the Browser</span>
-                    </h1>
-                    <p class="hero-description">
-                        Transform static SQL code blocks into interactive, browser-based SQL editors. Powered by DuckDB WebAssembly with
-                        zero backend requirements.
-                    </p>
-                    <div class="hero-features">
-                        <div class="feature-tag">🚀 Lightweight (~22KB)</div>
-                        <div class="feature-tag">⚡ Zero Backend</div>
-                        <div class="feature-tag">🎨 Dark/Light Mode</div>
-                        <div class="feature-tag">♿ Accessible</div>
+        <header class="hero" id="top">
+            <div class="hero__glow hero__glow--one"></div>
+            <div class="hero__glow hero__glow--two"></div>
+            <div class="container hero__container">
+                <nav class="nav">
+                    <a class="nav__brand" href="https://pondpilot.io" target="_blank" rel="noreferrer">
+                        <img src="assets/images/polly.svg" alt="PondPilot" />
+                        <span>PondPilot Widget</span>
+                    </a>
+                    <div class="nav__links">
+                        <a href="#quickstart">Quick start</a>
+                        <a href="#features">Features</a>
+                        <a href="#themes">Themes</a>
+                        <a href="#whats-new">What's new</a>
+                        <a href="https://pondpilot.io/docs/widget" target="_blank" rel="noreferrer">Docs</a>
+                        <a class="nav__cta" href="https://unpkg.com/pondpilot-widget@1.4.0" target="_blank" rel="noreferrer">
+                            <i class="fas fa-arrow-down"></i>
+                            Install 1.4.0
+                        </a>
+                    </div>
+                </nav>
+
+                <div class="hero__grid">
+                    <div class="hero__content">
+                        <h1>Make every SQL example a playground.</h1>
+                        <p>
+                            Transform static SQL into interactive DuckDB sessions you can embed in documentation,
+                            blog posts, product tours, and workshops—no servers, no setup, only fun.
+                        </p>
+                        <div class="hero__actions">
+                            <a class="btn btn--primary" href="https://github.com/pondpilot/pondpilot-widget" target="_blank" rel="noreferrer">
+                                <i class="fab fa-github"></i>
+                                View on GitHub
+                            </a>
+                            <a class="btn btn--ghost" href="https://www.npmjs.com/package/pondpilot-widget" target="_blank" rel="noreferrer">
+                                <i class="fab fa-npm"></i>
+                                Install via npm
+                            </a>
+                        </div>
+                        <ul class="hero__highlights">
+                            <li>🎨 Custom theme authoring with full font and color control.</li>
+                            <li>⚡ Init and reset queries for automated setup and teardown.</li>
+                            <li>📡 Event-driven results API for building custom visualizations.</li>
+                        </ul>
+                        <div class="hero__meta">
+                            <div class="meta-card">
+                                <strong>1.4.0</strong>
+                                <span>Latest widget release</span>
+                            </div>
+                            <div class="meta-card">
+                                <strong>DuckDB 1.31.1</strong>
+                                <span>Bundled WASM runtime</span>
+                            </div>
+                            <div class="meta-card">
+                                <strong>Zero backend</strong>
+                                <span>Everything stays in-browser</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero__preview">
+                        <div class="preview">
+                            <pre class="pondpilot-snippet hero-snippet">SELECT
+    o_orderstatus AS status,
+    COUNT(*) AS total_orders,
+    ROUND(AVG(o_totalprice), 2) AS avg_value
+FROM 'https://shell.duckdb.org/data/tpch/0_01/parquet/orders.parquet'
+GROUP BY status
+ORDER BY total_orders DESC;
+</pre>
+                            <div class="preview__footer">
+                                <div class="preview__footer-item">
+                                    <i class="fas fa-rocket"></i>
+                                    <div>
+                                        <strong>Instant results</strong>
+                                        <span>Runs DuckDB entirely in your browser</span>
+                                    </div>
+                                </div>
+                                <div class="preview__footer-item">
+                                    <i class="fas fa-code"></i>
+                                    <div>
+                                        <strong>Drop-in ready</strong>
+                                        <span>Add a class and you're done</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero__trust">
+                    <span>Trusted by developers for</span>
+                    <div class="trust__logos">
+                        <span class="trust__logo">Documentation sites</span>
+                        <span class="trust__logo">Technical blogs</span>
+                        <span class="trust__logo">Data workshops</span>
+                        <span class="trust__logo">Product demos</span>
                     </div>
                 </div>
             </div>
-        </section>
+        </header>
 
-        <!-- Quick Start -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">Quick Start</h2>
-                <div class="quick-start-grid">
-                    <div class="quick-start-card">
-                        <div class="step-number">1</div>
-                        <h3>Include the Script</h3>
-                        <pre class="code-block"><code>&lt;script src="https://unpkg.com/pondpilot-widget"&gt;&lt;/script&gt;</code></pre>
+        <main>
+            <section class="section section--light" id="features">
+                <div class="container">
+                    <div class="section__intro">
+                        <span class="pill">Why PondPilot Widget</span>
+                        <h2>Ship interactive SQL stories without provisioning anything.</h2>
+                        <p>
+                            PondPilot Widget wraps the power of DuckDB WASM in a tiny package that drops into any page. It keeps queries local,
+                            renders beautiful editors, and makes sharing analytical narratives delightful.
+                        </p>
                     </div>
-                    <div class="quick-start-card">
-                        <div class="step-number">2</div>
-                        <h3>Add the Class</h3>
-                        <pre class="code-block"><code>&lt;pre class="pondpilot-snippet"&gt;
-SELECT 'Hello World' as greeting;
+                    <div class="feature-grid">
+                        <article class="feature-card">
+                            <div class="feature-card__icon">🦆</div>
+                            <h3>DuckDB in the browser</h3>
+                            <p>Run full SQL analytics locally with the latest DuckDB 1.31.1 runtime—no round trips, no latency.</p>
+                        </article>
+                        <article class="feature-card">
+                            <div class="feature-card__icon">✨</div>
+                            <h3>Polished UX out of the box</h3>
+                            <p>Responsive editors, syntax highlighting, keyboard shortcuts, and light/dark theming tuned for docs and blogs.</p>
+                        </article>
+                        <article class="feature-card">
+                            <div class="feature-card__icon">🎨</div>
+                            <h3>Custom theme authoring</h3>
+                            <p>Create fully custom themes with your own fonts, colors, and sizes. Perfect for matching your brand.</p>
+                        </article>
+                        <article class="feature-card">
+                            <div class="feature-card__icon">⚡</div>
+                            <h3>Init and reset queries</h3>
+                            <p>Run setup SQL once per page and optional cleanup SQL whenever the editor resets. Perfect for data prep.</p>
+                        </article>
+                        <article class="feature-card">
+                            <div class="feature-card__icon">📡</div>
+                            <h3>Event-driven results</h3>
+                            <p>Listen to the pondpilot:results event to build custom visualizations, charts, and maps from query data.</p>
+                        </article>
+                        <article class="feature-card">
+                            <div class="feature-card__icon">📦</div>
+                            <h3>Zero backend required</h3>
+                            <p>CDN-friendly, CSP-ready, and only ~22KB. Works anywhere static HTML runs, from Markdown to Next.js.</p>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section section--dark" id="quickstart">
+                <div class="container">
+                    <div class="split">
+                        <div>
+                            <span class="pill pill--ghost">Quick start</span>
+                            <h2>Give any <code>&lt;pre&gt;</code> superpowers in under a minute.</h2>
+                            <p>
+                                PondPilot auto-detects marked snippets and turns them into interactive notebooks on load. Prefer full control?
+                                Instantiate widgets programmatically and share a DuckDB instance across them.
+                            </p>
+                            <ol class="steps">
+                                <li>
+                                    <span>01</span>
+                                    <div>
+                                        <strong>Load the script</strong>
+                                        Use the CDN for instant demos or npm/yarn for bundlers.
+                                    </div>
+                                </li>
+                                <li>
+                                    <span>02</span>
+                                    <div>
+                                        <strong>Tag your SQL</strong>
+                                        Apply the <code>pondpilot-snippet</code> class to any <code>&lt;pre&gt;</code>.
+                                    </div>
+                                </li>
+                                <li>
+                                    <span>03</span>
+                                    <div>
+                                        <strong>Optionally configure</strong>
+                                        Toggle theming, branding, or provide your own DuckDB instance.
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="code-stack">
+                            <article class="code-card">
+                                <header>
+                                    <span>CDN</span>
+                                    <a href="https://unpkg.com/pondpilot-widget@1.4.0" target="_blank" rel="noreferrer">unpkg.com</a>
+                                </header>
+                                <pre><code class="language-markup">&lt;script src="https://unpkg.com/pondpilot-widget@1.4.0"&gt;&lt;/script&gt;
+&lt;pre class="pondpilot-snippet"&gt;
+SELECT 'Hello DuckDB' AS greeting;
 &lt;/pre&gt;</code></pre>
-                    </div>
-                    <div class="quick-start-card">
-                        <div class="step-number">3</div>
-                        <h3>That's It!</h3>
-                        <p>Your SQL code blocks are now interactive. Users can modify and run queries directly in the browser.</p>
+                            </article>
+                            <article class="code-card">
+                                <header>
+                                    <span>Programmatic init</span>
+                                    <a href="https://github.com/pondpilot/pondpilot-widget#usage" target="_blank" rel="noreferrer">Docs</a>
+                                </header>
+                                <pre><code class="language-javascript">import 'pondpilot-widget';
+
+const el = document.querySelector('#report');
+const dbPromise = window.createDuckDB?.();
+
+new PondPilot.Widget(el, {
+  theme: 'dark',
+  duckdbInstance: dbPromise,
+  showPoweredBy: false
+});</code></pre>
+                            </article>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Live Demo -->
-        <section class="section demo-section">
+            <section class="section" id="themes">
+                <div class="container">
+                    <div class="section__intro">
+                        <span class="pill">Themes</span>
+                        <h2>Paint the widget to match your brand.</h2>
+                        <p>Start from a preset or author your own palette with full control over colors, typography, and syntax tokens.</p>
+                    </div>
+                    <div class="demo-grid">
+                        <article class="demo-card">
+                            <h3>Midnight Neon</h3>
+                            <p>Synthwave-inspired dark mode with electric blues and glowing controls.</p>
+                            <pre class="pondpilot-snippet" data-theme="midnight-neon">SELECT
+  'Midnight Neon' AS theme,
+  'Electric glow for night mode' AS vibe;</pre>
+                        </article>
+                        <article class="demo-card">
+                            <h3>Sunset Sorbet</h3>
+                            <p>Warm oranges and soft browns for a welcoming editorial feel.</p>
+                            <pre class="pondpilot-snippet" data-theme="sunset-sorbet">SELECT
+  'Sunset Sorbet' AS theme,
+  'Citrus gradients meet code' AS flavor;</pre>
+                        </article>
+                        <article class="demo-card">
+                            <h3>Retro Terminal</h3>
+                            <p>IBM Plex Mono, neon greens, and amber accents for a vintage terminal aesthetic.</p>
+                            <pre class="pondpilot-snippet" data-theme="retro-terminal">SELECT
+  'Retro Terminal' AS theme,
+  'CRT glow with modern ergonomics' AS energy;</pre>
+                        </article>
+                    </div>
+                    <p class="demo-note">Browse the <a href="https://github.com/pondpilot/pondpilot-widget/blob/main/docs/API.md#pondpilotregisterthemename-definition" target="_blank" rel="noreferrer">theme authoring guide</a> for the full token list and deeper customization tips.</p>
+                </div>
+            </section>
+
+            <section class="section section--accent" id="whats-new">
+                <div class="container">
+                    <div class="whats-new">
+                        <div class="whats-new__content">
+                            <span class="pill">What's new in 1.4.0</span>
+                            <h2>Custom themes, init queries, and event-driven results.</h2>
+                            <p>
+                                The November 2025 release brings powerful customization and integration features. Author fully custom themes,
+                                automate data setup with init queries, and build visualizations with structured result events.
+                            </p>
+                            <ul>
+                                <li>🎨 Theme authoring API with full control over fonts, colors, and sizes.</li>
+                                <li>⚡ Init and reset queries for automated setup and teardown workflows.</li>
+                                <li>📡 <code>pondpilot:results</code> event emits structured row data for custom visualizations.</li>
+                                <li>⌨️ Keyboard shortcut (Ctrl/Cmd+Enter) to execute queries directly from the editor.</li>
+                                <li>🧪 Vitest test suite and React/Vue integration examples.</li>
+                            </ul>
+                            <div class="whats-new__actions">
+                                <a class="btn btn--ghost" href="https://github.com/pondpilot/pondpilot-widget/blob/main/CHANGELOG.md" target="_blank" rel="noreferrer">Read the changelog</a>
+                                <a class="btn btn--ghost" href="https://github.com/pondpilot/pondpilot-widget/tree/main/docs" target="_blank" rel="noreferrer">See the docs</a>
+                            </div>
+                        </div>
+                        <div class="whats-new__card">
+                            <h3>Listen to query results</h3>
+                            <p>
+                                React to query results with the new <code>pondpilot:results</code> event. Perfect for building custom charts,
+                                maps, or any data visualization alongside your interactive SQL.
+                            </p>
+                            <pre><code class="language-javascript">widget.addEventListener('pondpilot:results', (e) => {
+  const { rows, columns } = e.detail;
+
+  // Build a chart, update a map, etc.
+  updateVisualization(rows, columns);
+});
+
+// Or with init queries
+new PondPilot.Widget(el, {
+  initQuery: `CREATE TABLE data AS
+              SELECT * FROM 'data.parquet';`,
+  resetQuery: 'DROP TABLE IF EXISTS data;'
+});</code></pre>
+                            <p class="whats-new__note">Enables powerful data storytelling with custom visualizations.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section section--light" id="integrations">
+                <div class="container">
+                    <div class="section__intro">
+                        <span class="pill">Works everywhere</span>
+                        <h2>From Markdown to modern frameworks.</h2>
+                        <p>Drop the widget into static sites, React, Vue, or your favorite docs stack—no build-step gymnastics required.</p>
+                    </div>
+                    <div class="integration-stack">
+                        <article class="integration-card">
+                            <div class="integration-card__header">
+                                <h3>Markdown &amp; docs</h3>
+                                <p>Add one script tag to Docusaurus, VitePress, Astro, or a plain HTML export and you're live.</p>
+                            </div>
+                            <pre><code class="language-javascript">// docusaurus.config.js
+module.exports = {
+  scripts: ['https://unpkg.com/pondpilot-widget@1.4.0']
+};</code></pre>
+                        </article>
+                        <article class="integration-card">
+                            <div class="integration-card__header">
+                                <h3>React &amp; Next.js</h3>
+                                <p>Import the package once, then wrap snippets in lightweight components for live tutorials.</p>
+                            </div>
+                            <pre><code class="language-javascript">import { useEffect, useRef } from 'react';
+import 'pondpilot-widget';
+
+export function SQLPlayground({ sql }) {
+  const ref = useRef();
+  useEffect(() => {
+    const widget = new PondPilot.Widget(ref.current);
+    return () => widget.destroy();
+  }, []);
+  return &lt;pre ref={ref} className="pondpilot-snippet"&gt;{sql}&lt;/pre&gt;;
+}</code></pre>
+                        </article>
+                        <article class="integration-card">
+                            <div class="integration-card__header">
+                                <h3>Workshops &amp; slides</h3>
+                                <p>Embed interactive SQL directly inside slides or LMS content to keep labs engaging.</p>
+                            </div>
+                            <pre><code class="language-markup">&lt;section data-auto-animate&gt;
+  &lt;h2&gt;Run the query&lt;/h2&gt;
+  &lt;pre class="pondpilot-snippet"&gt;SELECT * FROM attendees;&lt;/pre&gt;
+&lt;/section&gt;</code></pre>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section section--cta" id="cta">
+                <div class="container">
+                    <div class="cta">
+                        <h2>Ready to make your SQL glow?</h2>
+                        <p>
+                            Install the PondPilot Widget, point it at your code blocks, and give your readers a playground they won't forget.
+                            No backend, no waiting, just instant insight.
+                        </p>
+                        <div class="cta__actions">
+                            <a class="btn btn--primary" href="https://unpkg.com/pondpilot-widget@1.4.0" target="_blank" rel="noreferrer">
+                                Grab the CDN build
+                            </a>
+                            <a class="btn btn--ghost" href="https://www.npmjs.com/package/pondpilot-widget" target="_blank" rel="noreferrer">
+                                npm install pondpilot-widget
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
             <div class="container">
-                <h2 class="section-title">Try It Live</h2>
-                <p class="section-description">
-                    Click "Run" on any of the examples below to see the widget in action. Feel free to modify the queries and experiment!
-                </p>
-
-                <!-- Basic Example -->
-                <div class="demo-block">
-                    <h3 class="demo-title">Basic Query</h3>
-                    <p class="demo-description">Start with a simple SELECT statement:</p>
-                    <pre class="pondpilot-snippet">
-SELECT
-    'Hello from PondPilot Widget!' as greeting,
-    CURRENT_DATE::STRING as today,
-    42 as answer_to_everything;</pre
-                    >
-                </div>
-
-                <!-- Data Creation -->
-                <div class="demo-block">
-                    <h3 class="demo-title">Working with Data</h3>
-                    <p class="demo-description">Create tables and analyze data entirely in the browser:</p>
-                    <pre class="pondpilot-snippet">
--- Create a sample products table
-CREATE TABLE products AS
-SELECT * FROM (VALUES
-    ('Laptop', 'Electronics', 999.99, 50),
-    ('Mouse', 'Electronics', 29.99, 200),
-    ('Desk', 'Furniture', 299.99, 25),
-    ('Chair', 'Furniture', 199.99, 40),
-    ('Monitor', 'Electronics', 349.99, 75)
-) AS t(name, category, price, stock);
-
--- Analyze inventory by category
-SELECT
-    category,
-    COUNT(*) as product_count,
-    ROUND(AVG(price), 2) as avg_price,
-    SUM(stock) as total_stock,
-    ROUND(SUM(price * stock), 2) as inventory_value
-FROM products
-GROUP BY category
-ORDER BY inventory_value DESC;</pre
-                    >
-                </div>
-
-                <!-- Advanced Analytics -->
-                <div class="demo-block">
-                    <h3 class="demo-title">Advanced Analytics</h3>
-                    <p class="demo-description">Window functions, CTEs, and complex queries work seamlessly:</p>
-                    <pre class="pondpilot-snippet">
--- Create sales data
-CREATE TABLE daily_sales AS
-SELECT
-    date,
-    ROUND(RANDOM() * 1000 + 500, 2) as revenue
-FROM generate_series(
-    DATE '2025-01-01',
-    DATE '2025-01-14',
-    INTERVAL 1 DAY
-) AS t(date);
-
--- Calculate moving averages and growth
-SELECT
-    date::STRING as date,
-    revenue,
-    ROUND(AVG(revenue) OVER (
-        ORDER BY date
-        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
-    ), 2) as ma_3day,
-    ROUND(revenue - LAG(revenue) OVER (ORDER BY date), 2) as daily_change,
-    ROUND(100.0 * (revenue - LAG(revenue) OVER (ORDER BY date)) /
-          LAG(revenue) OVER (ORDER BY date), 1) as pct_change
-FROM daily_sales
-ORDER BY date;</pre
-                    >
-                </div>
-
-                <!-- External Data -->
-                <div class="demo-block">
-                    <h3 class="demo-title">External Data Sources</h3>
-                    <p class="demo-description">Query remote CSV and Parquet files directly:</p>
-                    <pre class="pondpilot-snippet">
--- Query a remote Parquet file
-SELECT
-  o_orderstatus,
-  COUNT(*) AS total_orders,
-  ROUND(AVG(o_totalprice), 2) AS avg_order_value
-FROM
-  'https://shell.duckdb.org/data/tpch/0_01/parquet/orders.parquet'
-GROUP BY
-  o_orderstatus
-ORDER BY
-  total_orders DESC;</pre
-                    >
-                </div>
-            </div>
-        </section>
-
-        <!-- Installation -->
-        <section class="section installation-section">
-            <div class="container">
-                <h2 class="section-title">Installation</h2>
-                <div class="installation-grid">
-                    <div class="install-method">
-                        <h3><i class="fas fa-link"></i> CDN</h3>
-                        <p>Quick and easy - just include the script tag:</p>
-                        <pre class="code-block"><code>&lt;script src="https://unpkg.com/pondpilot-widget"&gt;&lt;/script&gt;</code></pre>
-                    </div>
-                    <div class="install-method">
-                        <h3><i class="fab fa-npm"></i> NPM</h3>
-                        <p>For modern build systems:</p>
-                        <pre class="code-block"><code>npm install pondpilot-widget</code></pre>
-                    </div>
-                    <div class="install-method">
-                        <h3><i class="fab fa-yarn"></i> Yarn</h3>
-                        <p>Alternative package manager:</p>
-                        <pre class="code-block"><code>yarn add pondpilot-widget</code></pre>
+                <div class="footer__top">
+                    <a class="footer__brand" href="https://pondpilot.io" target="_blank" rel="noreferrer">
+                        <img src="assets/images/polly.svg" alt="PondPilot" />
+                        <span>PondPilot</span>
+                    </a>
+                    <div class="footer__links">
+                        <a href="https://github.com/pondpilot/pondpilot-widget" target="_blank" rel="noreferrer">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="https://www.npmjs.com/package/pondpilot-widget" target="_blank" rel="noreferrer">
+                            <i class="fab fa-npm"></i> npm
+                        </a>
+                        <a href="https://github.com/pondpilot/pondpilot-widget/blob/main/CHANGELOG.md" target="_blank" rel="noreferrer">
+                            Changelog
+                        </a>
+                        <a href="https://github.com/pondpilot/pondpilot-widget/tree/main/docs" target="_blank" rel="noreferrer">
+                            Documentation
+                        </a>
+                        <a href="https://pondpilot.io" target="_blank" rel="noreferrer">
+                            pondpilot.io
+                        </a>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- Configuration -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">Configuration</h2>
-                <p class="section-description">Customize the widget's appearance and behavior:</p>
-
-                <div class="config-example">
-                    <pre class="code-block"><code>// Set theme
-window.PondPilot.config.theme = 'dark'; // or 'light'
-
-// Hide powered by footer
-window.PondPilot.config.showPoweredBy = false;
-
-// Set custom height
-window.PondPilot.config.height = '400px';
-
-// Enable syntax highlighting
-window.PondPilot.config.highlightSyntax = true;</code></pre>
-                </div>
-            </div>
-        </section>
-
-        <!-- Use Cases -->
-        <section class="section use-cases-section">
-            <div class="container">
-                <h2 class="section-title">Perfect For</h2>
-                <div class="use-cases-grid">
-                    <div class="use-case-card">
-                        <i class="fas fa-graduation-cap"></i>
-                        <h3>Educational Content</h3>
-                        <p>Teach SQL with hands-on, interactive examples</p>
-                    </div>
-                    <div class="use-case-card">
-                        <i class="fas fa-book"></i>
-                        <h3>Documentation</h3>
-                        <p>Provide runnable examples in your technical docs</p>
-                    </div>
-                    <div class="use-case-card">
-                        <i class="fas fa-blog"></i>
-                        <h3>Technical Blogs</h3>
-                        <p>Engage readers with interactive data analysis</p>
-                    </div>
-                    <div class="use-case-card">
-                        <i class="fas fa-chart-line"></i>
-                        <h3>Data Portfolios</h3>
-                        <p>Showcase your SQL skills interactively</p>
-                    </div>
-                    <div class="use-case-card">
-                        <i class="fas fa-users"></i>
-                        <h3>Workshops</h3>
-                        <p>Interactive SQL training and tutorials</p>
-                    </div>
-                    <div class="use-case-card">
-                        <i class="fas fa-code"></i>
-                        <h3>Code Examples</h3>
-                        <p>Live demonstrations in presentations</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="container">
-                <div class="footer-content">
-                    <div class="footer-brand">
-                        <img src="assets/images/polly.svg" alt="PondPilot" class="footer-logo" />
-                        <span class="footer-brand-text">PondPilot Widget</span>
-                    </div>
-                    <div class="footer-links">
-                        <a href="https://github.com/pondpilot/pondpilot-widget" target="_blank">GitHub</a>
-                        <a href="https://www.npmjs.com/package/pondpilot-widget" target="_blank">NPM</a>
-                        <a href="https://pondpilot.io/blog">Blog</a>
-                        <a href="https://pondpilot.io">PondPilot</a>
-                    </div>
-                </div>
-                <div class="footer-bottom">
-                    <p>&copy; 2025 PondPilot. Open source under MIT license.</p>
+                <div class="footer__bottom">
+                    <span>&copy; 2025 PondPilot. Open source under the MIT license.</span>
+                    <span style="opacity: 0.5;">•</span>
+                    <span>Version 1.4.0</span>
                 </div>
             </div>
         </footer>
 
-        <!-- PondPilot Widget Script -->
-        <script src="https://unpkg.com/pondpilot-widget"></script>
-
-        <!-- Configuration -->
         <script>
-            // Configure the widget
-            window.PondPilot.config.theme = "light";
-            window.PondPilot.config.showPoweredBy = true;
+            const landingThemes = {
+                'midnight-neon': {
+                    extends: 'dark',
+                    config: {
+                        bgColor: '#0c1022',
+                        textColor: '#e7ecff',
+                        borderColor: 'rgba(56, 189, 248, 0.18)',
+                        editorBg: '#050814',
+                        editorText: '#eaf6ff',
+                        editorFocusBg: '#09102a',
+                        controlsBg: 'rgba(56, 189, 248, 0.14)',
+                        primaryBg: '#22d3ee',
+                        primaryHover: '#0ea5e9',
+                        secondaryBg: 'rgba(34, 211, 238, 0.18)',
+                        secondaryText: '#c4f1ff',
+                        syntaxKeyword: '#38bdf8',
+                        syntaxString: '#fb7185',
+                        syntaxNumber: '#a855f7',
+                        syntaxComment: '#94a3b8',
+                        syntaxSpecial: '#f97316',
+                        syntaxIdentifier: '#facc15',
+                        tableHeaderBg: 'rgba(34, 211, 238, 0.16)',
+                        tableHeaderText: '#d5f5ff',
+                        outputBg: '#111321'
+                    }
+                },
+                'sunset-sorbet': {
+                    extends: 'light',
+                    config: {
+                        bgColor: '#fff7ed',
+                        textColor: '#7c2d12',
+                        mutedText: '#9a3412',
+                        borderColor: 'rgba(249, 115, 22, 0.12)',
+                        editorBg: '#fff0e6',
+                        editorText: '#7c2d12',
+                        editorFocusBg: '#ffe8d7',
+                        controlsBg: 'rgba(249, 115, 22, 0.14)',
+                        primaryBg: '#f97316',
+                        primaryHover: '#ea580c',
+                        secondaryBg: 'rgba(249, 115, 22, 0.2)',
+                        secondaryText: '#7c2d12',
+                        outputBg: '#fff4e6',
+                        syntaxKeyword: '#c2410c',
+                        syntaxString: '#0f766e',
+                        syntaxNumber: '#2563eb',
+                        syntaxComment: '#9a3412',
+                        syntaxSpecial: '#dc2626',
+                        syntaxIdentifier: '#d97706',
+                        tableHeaderBg: 'rgba(249, 115, 22, 0.16)',
+                        tableHeaderText: '#7c2d12',
+                        tableHover: 'rgba(249, 115, 22, 0.08)'
+                    }
+                },
+                'retro-terminal': {
+                    extends: 'dark',
+                    config: {
+                        bgColor: '#121212',
+                        borderColor: 'rgba(0, 255, 133, 0.14)',
+                        editorBg: '#050505',
+                        editorText: '#eafff2',
+                        editorFocusBg: '#111b14',
+                        controlsBg: 'rgba(0, 255, 133, 0.14)',
+                        primaryBg: '#00ff85',
+                        primaryHover: '#0ddf7d',
+                        secondaryBg: 'rgba(0, 255, 133, 0.12)',
+                        secondaryText: '#9ef2c3',
+                        syntaxKeyword: '#00ff85',
+                        syntaxString: '#ff9f1c',
+                        syntaxNumber: '#2ec4b6',
+                        syntaxComment: '#94e2b8',
+                        syntaxIdentifier: '#fdffb6',
+                        tableHeaderBg: 'rgba(0, 255, 133, 0.12)',
+                        tableHeaderText: '#d1fbee',
+                        fontFamily: "'IBM Plex Mono', 'SFMono-Regular', monospace",
+                        editorFontFamily: "'IBM Plex Mono', 'SFMono-Regular', monospace"
+                    }
+                }
+            };
+
+            const baseConfig = window.PONDPILOT_CONFIG || {};
+            const prefersDark = typeof window !== 'undefined' && window.matchMedia
+                ? window.matchMedia('(prefers-color-scheme: dark)').matches
+                : false;
+
+            window.PONDPILOT_CONFIG = Object.assign({}, baseConfig, {
+                selector: '.pondpilot-snippet',
+                theme: prefersDark ? 'dark' : 'light',
+                duckdbVersion: '1.31.1',
+                showPoweredBy: false,
+                customThemes: Object.assign({}, baseConfig.customThemes || {}, landingThemes)
+            });
+        </script>
+        <script src="https://unpkg.com/pondpilot-widget@1.4.0"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-markup.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+        <script>
+            if (window.PondPilot) {
+                if (typeof window.PondPilot.config === 'function') {
+                    window.PondPilot.config({ customThemes: landingThemes, showPoweredBy: false });
+                }
+                if (typeof window.PondPilot.init === 'function') {
+                    window.PondPilot.init();
+                }
+            }
         </script>
     </body>
 </html>
