@@ -65,6 +65,13 @@ a:hover {
 .container {
     width: min(var(--max-width), calc(100% - 48px));
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 24px;
+}
+
+.container > * {
+    grid-column: 1 / -1;
 }
 
 p {
@@ -339,9 +346,17 @@ pre code {
 
 .hero__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr);
-    gap: 64px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 24px;
     align-items: stretch;
+}
+
+.hero__content {
+    grid-column: 1 / 4;
+}
+
+.hero__preview {
+    grid-column: 4 / 7;
 }
 
 .hero__content h1 {
@@ -666,9 +681,17 @@ pre code {
 
 .split {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 80px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 24px;
     align-items: start;
+}
+
+.split > *:first-child {
+    grid-column: 1 / 4;
+}
+
+.split > *:last-child {
+    grid-column: 4 / 7;
 }
 
 .steps {
@@ -881,9 +904,17 @@ pre code {
 
 .whats-new {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: 50px;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 24px;
     align-items: stretch;
+}
+
+.whats-new__content {
+    grid-column: 1 / 4;
+}
+
+.whats-new__card {
+    grid-column: 4 / 7;
 }
 
 .whats-new__content {
@@ -892,6 +923,7 @@ pre code {
     padding: 2.1rem 2.4rem;
     border: 1px solid rgba(15, 23, 42, 0.08);
     box-shadow: 0 40px 90px rgba(15, 23, 42, 0.12);
+    grid-column: 1 / 4;
 }
 
 .whats-new__content ul {
@@ -917,6 +949,7 @@ pre code {
     padding: 2rem;
     border: 1px solid rgba(124, 92, 255, 0.25);
     box-shadow: var(--shadow-md);
+    grid-column: 4 / 7;
 }
 
 .whats-new__card p {
@@ -1084,7 +1117,11 @@ footer {
 @media (max-width: 1080px) {
     .hero__grid {
         grid-template-columns: 1fr;
-        gap: 48px;
+    }
+
+    .hero__content,
+    .hero__preview {
+        grid-column: 1 / -1;
     }
 
     .hero__preview {
@@ -1129,7 +1166,13 @@ footer {
     .split,
     .whats-new {
         grid-template-columns: 1fr;
-        gap: 40px;
+    }
+
+    .split > *:first-child,
+    .split > *:last-child,
+    .whats-new__content,
+    .whats-new__card {
+        grid-column: 1 / -1;
     }
 
     .code-card {
