@@ -71,7 +71,7 @@
                                 <span>Latest widget release</span>
                             </div>
                             <div class="meta-card">
-                                <strong>DuckDB 1.31.1-dev1.0</strong>
+                                <strong>DuckDB 1.31.1</strong>
                                 <span>Bundled WASM runtime</span>
                             </div>
                             <div class="meta-card">
@@ -137,7 +137,7 @@ ORDER BY total_orders DESC;
                         <article class="feature-card">
                             <div class="feature-card__icon">🦆</div>
                             <h3>DuckDB in the browser</h3>
-                            <p>Run full SQL analytics locally with the latest DuckDB 1.31.1-dev1.0 runtime—no round trips, no latency.</p>
+                            <p>Run full SQL analytics locally with the latest DuckDB 1.31.1 runtime—no round trips, no latency.</p>
                         </article>
                         <article class="feature-card">
                             <div class="feature-card__icon">✨</div>
@@ -506,7 +506,7 @@ export function SQLPlayground({ sql }) {
             window.PONDPILOT_CONFIG = Object.assign({}, baseConfig, {
                 selector: '.pondpilot-snippet',
                 theme: prefersDark ? 'dark' : 'light',
-                duckdbVersion: '1.31.1-dev1.0',
+                duckdbVersion: '1.31.1',
                 showPoweredBy: false,
                 customThemes: Object.assign({}, baseConfig.customThemes || {}, landingThemes)
             });
